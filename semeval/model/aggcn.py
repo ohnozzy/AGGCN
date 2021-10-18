@@ -29,9 +29,9 @@ class GCNClassifier(nn.Module):
         self.opt = opt
 
     def forward(self, inputs):
-        outputs, pooling_output = self.gcn_model(inputs)
+        outputs, pooling_output, aggcn_output = self.gcn_model(inputs)
         logits = self.classifier(outputs)
-        return logits, pooling_output
+        return logits, pooling_output, aggcn_output
 
 
 class GCNRelationModel(nn.Module):
@@ -97,7 +97,7 @@ class GCNRelationModel(nn.Module):
         outputs = torch.cat([h_out, subj_out, obj_out], dim=1)
         outputs = self.out_mlp(outputs)
 
-        return outputs, h_out
+        return outputs, h_out, h
 
 
 class AGGCN(nn.Module):

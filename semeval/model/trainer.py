@@ -112,5 +112,5 @@ class GCNTrainer(Trainer):
     def cal_intermediate(self, inputs):
         self.model.eval()
         logits, _, aggcn_output = self.model(inputs)
-        return logit, aggcn_output
+        return logits, aggcn_output
         

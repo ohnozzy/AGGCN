@@ -108,9 +108,15 @@ class GCNTrainer(Trainer):
                     predictions, probs)))]
         return predictions, probs, loss.item()
     
-    @torch.no_grad()
     def cal_intermediate(self, inputs):
         self.model.eval()
-        logits, _, aggcn_output = self.model(inputs)
+        with torch.no_grad():
+            logits, _, aggcn_output = self.model(inputs)
         return logits, aggcn_output
+    
+    def training_transform(self, batch):
+        inputs, labels, tokens, head, subj_pos, obj_pos, lens = unpack_batch(batch, self.opt['cuda'])
+        logits, aggcn_output = self.cal_intermediate(inputs)
+        return logits, aggcn_output, labels
+        
         
